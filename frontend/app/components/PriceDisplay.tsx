@@ -115,7 +115,16 @@ const PriceDisplay: React.FC<PriceDisplayProps> = ({ result, history }) => {
                                     />
                                     <Tooltip
                                         labelFormatter={ts => new Date(ts * 1000).toLocaleString()}
-                                        formatter={v => `$${v.toFixed(2)}`}
+                                        formatter={v => {
+                                            let value: string | number;
+                                            if (Array.isArray(v)) {
+                                                value = v[0];
+                                            } else {
+                                                value = v;
+                                            }
+                                            const num = typeof value === 'number' ? value : parseFloat(value as string);
+                                            return isNaN(num) ? value : `$${num.toFixed(2)}`;
+                                        }}
                                     />
                                     <Line
                                         type="monotone"
